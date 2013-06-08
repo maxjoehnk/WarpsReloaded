@@ -1,0 +1,4 @@
+name: WarpsReloaded
+author: e-freak
+version: ${version}
+main: org.efreak.warps.WarpsReloaded
