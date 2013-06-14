@@ -2,3 +2,16 @@ name: WarpsReloaded
 author: e-freak
 version: ${version}
 main: org.efreak.warps.WarpsReloaded
+website: http://dev.bukkit.org/bukkit-mods/warpsreloaded/
+description: >
+             
+softdepend: [Vault, PermissionsBukkit, PermissionsEx, bPermissions, zPermissions, DroxPerms, GroupManager]
+commands:
+  warp:
+    description: The Main Command of Warps Reloaded
+    usage: >
+           Use /warp help for more help
+  warps:
+    description: Displays a list of all available warps
+    usage: >
+           /warps [#]
