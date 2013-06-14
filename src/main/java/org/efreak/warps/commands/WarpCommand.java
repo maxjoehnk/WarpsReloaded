@@ -12,8 +12,10 @@ import org.efreak.warps.help.HelpManager;
 public class WarpCommand implements CommandExecutor {
 
 	public WarpCommand() {
+		HelpManager.registerCommand("Warp", "/warp", Arrays.asList("(name)", "[player]"), "warps.warp");
 		HelpManager.registerCommand("Warp.Create", "/warp create", Arrays.asList("(name)"), "warps.warp.create");
 		HelpManager.registerCommand("Warp.List", "/warp list", Arrays.asList("[#]"), "warps.list");
+		HelpManager.registerCommand("Warp.Help", "/warp help", Arrays.asList("[#]"), "warps.help");
 	}
 	
 	@Override
