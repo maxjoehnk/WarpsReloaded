@@ -72,12 +72,12 @@ public class Permissions {
 		}else io.sendConsole(io.translate("Permissions.OP"));
 	}
 		
-	public static boolean has(CommandSender sender, String perm, String cmd) {
-		return has(sender, perm, cmd, config.getBoolean("General.Permissions.Log"));
+	public static boolean has(CommandSender sender, String perm, boolean needsOp, String cmd) {
+		return has(sender, perm, needsOp, cmd, config.getBoolean("General.Permissions.Log"));
 	}
 	
-	public static boolean has(CommandSender sender, String perm, String cmd, boolean log) {
-		boolean hasPerm = has(sender, perm);
+	public static boolean has(CommandSender sender, String perm, boolean needsOp, String cmd, boolean log) {
+		boolean hasPerm = has(sender, perm, needsOp);
 		if (hasPerm == false) {
 			io.send(sender, io.translate("Command.NoPerm.Player"));
 			if (log) io.sendConsoleWarning(io.translate("Command.NoPerm.Console").replaceAll("%cmd%", cmd).replaceAll("%player%", sender.getName()));
@@ -85,12 +85,14 @@ public class Permissions {
 		return hasPerm;
 	}
 	
-	public static boolean has(CommandSender sender, String perm) {
+	public static boolean has(CommandSender sender, String perm, boolean needsOp) {
 		if (sender instanceof ConsoleCommandSender) return true;
 		if (sender.isOp()) return true;
 		boolean hasPerm = false;
-		if (!usePerms) hasPerm = sender.isOp();
-		else {
+		if (!usePerms) {
+			if (needsOp) return sender.isOp();
+			else return true;
+		}else {
 			if (forceSuper) hasPerm = sender.hasPermission(perm);
 			else if (permSystem.equalsIgnoreCase("Vault")) hasPerm = vault.has(sender, perm);
 			//else if (permSystem.equalsIgnoreCase("GroupManager")) hasPerm = groupManager.getWorldsHolder().getWorldPermissions(((Player) sender)).has((Player) sender, perm);
