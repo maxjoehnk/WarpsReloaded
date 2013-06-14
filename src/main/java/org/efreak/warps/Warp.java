@@ -72,6 +72,7 @@ public class Warp {
 				io.sendConsoleWarning("Warp couldn't be found");
 				return;
 			}
+			this.name = name;
 			ConfigurationSection warp = WarpConfiguration.getWarp(name);
 			World world = Bukkit.getWorld(warp.getString("Location.World"));
 			int x = warp.getInt("Location.X");
@@ -102,7 +103,7 @@ public class Warp {
 	}
 	
 	public void warp(Player player) {
-		if ((permRequired && Permissions.has(player, perm)) || !permRequired) {
+		if ((permRequired && Permissions.has(player, perm, true)) || !permRequired) {
 			if ((payRequired && WarpsReloaded.getEconomy().bankHas(player.getName(), cost).transactionSuccess()) || !payRequired) {
 				if (config.getBoolean("Warps.Particles"))player.playEffect(player.getLocation(), Effect.SMOKE, 0);
 				player.teleport(location, TeleportCause.PLUGIN);
