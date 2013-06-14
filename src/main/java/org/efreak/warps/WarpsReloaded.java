@@ -53,7 +53,9 @@ public class WarpsReloaded extends JavaPlugin {
 			io.sendConsoleWarning("Unknown Database System. Falling back to SQLite");
 			db = Database.getDatabaseBySystem("SQLite");
 		}
-		db.init();
+		if (config.getBoolean("Warps.UseDatabase")) db.init();
+		warps = new HashMap<String, Warp>();
+		for (String warp : WarpConfiguration.getWarpNames()) warps.put(warp, new Warp(warp));
 		new HelpManager().init();
 		getServer().getPluginCommand("warp").setExecutor(new WarpCommand());
 		getServer().getPluginCommand("warps").setExecutor(new WarpsCommand());
@@ -61,14 +63,14 @@ public class WarpsReloaded extends JavaPlugin {
 		if (config.getBoolean("General.Statistics")) metrics.startMetrics();
 		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null) economy = economyProvider.getProvider();
-
+		io.sendConsole(getDescription().getFullName() + " has been enabled");
 	}
 	
 	@Override
 	public void onDisable() {
-    	db.shutdown();
+		if (config.getBoolean("Warps.UseDatabase")) db.shutdown();
     	getServer().getScheduler().cancelTasks(this);
-    	io.sendConsole(io.translate("Plugin.Done"));
+		io.sendConsole(getDescription().getFullName() + " has been disabled");
 	}
 	
 	public static HashMap<String, Warp> getWarps() {
