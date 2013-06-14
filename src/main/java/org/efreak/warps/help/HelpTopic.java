@@ -44,7 +44,7 @@ public class HelpTopic {
 	}
 	
 	public boolean hasPerm(CommandSender sender) {
-		return Permissions.has(sender, perms);
+		return Permissions.has(sender, perms, false);
 	}
 	
 }
