@@ -89,6 +89,7 @@ public class Configuration{
 		update("IO.ColoredLogs", true);
 		update("IO.HelpHeader", "WARPS RELOADED HELP(%page%/%pages%)");
 		update("IO.HelpFormat", "&e%cmd% %args%: &f%desc%");
+		update("Database.System", "SQLite");
 		update("Warps.UseDatabase", true); //Save Warps in Database or Flatfile
 		if (!getBoolean("Warps.UseDatabase")) update("Warps.File", "warps.yml");
 		else remove("Warps.File");
@@ -109,7 +110,6 @@ public class Configuration{
 	 * @return The currently used Database System
 	 * @see org.efreak.bukkitmanager.Database
 	 */
-	
 	public String getDatabaseType() {return dbType;}
 	
 	public String getString(String path) {return config.getString(path);}	
