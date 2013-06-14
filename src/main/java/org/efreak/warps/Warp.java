@@ -1,8 +1,5 @@
 package org.efreak.warps;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,8 +8,6 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -22,8 +17,8 @@ public class Warp {
 	private String name;
 	private String perm;
 	private int cost;
-	private boolean permRequired;
-	private boolean payRequired;
+	private boolean permRequired = false;
+	private boolean payRequired = false;
 
 	private static Configuration config;
 	private static Database db;
@@ -72,22 +67,25 @@ public class Warp {
 				return;
 			}
 		}else {
-			YamlConfiguration warpsFile = new YamlConfiguration();
-			try {
-				warpsFile.load(new File(config.getString("Warps.File")));
-			} catch (Exception e) {
-				if (config.getDebug()) e.printStackTrace();
-				io.sendConsoleError("Error loading Warp " + name);
-				io.sendConsoleError("IOException: " + e.getMessage());
-				return;
-			}
-			if (!warpsFile.contains(name)) {
+			if (!WarpConfiguration.containsWarp(name)) {
 				io.sendConsoleWarning("Can't load warp " + name);
 				io.sendConsoleWarning("Warp couldn't be found");
 				return;
 			}
-			ConfigurationSection warpSection = warpsFile.getConfigurationSection(name);
-			
+			ConfigurationSection warp = WarpConfiguration.getWarp(name);
+			World world = Bukkit.getWorld(warp.getString("Location.World"));
+			int x = warp.getInt("Location.X");
+			int y = warp.getInt("Location.Y");
+			int z = warp.getInt("Location.Z");
+			location = new Location(world, x, y, z);
+			if (warp.contains("Cost")) {
+				cost = warp.getInt("Cost");
+				payRequired = true;
+			}
+			if (warp.contains("Permission")) {
+				perm = warp.getString("Permission");
+				permRequired = true;
+			}
 		}
 	}
 	
@@ -104,8 +102,13 @@ public class Warp {
 	}
 	
 	public void warp(Player player) {
-		if (permRequired && !Permissions.has(player, perm)) {
-			
+		if ((permRequired && Permissions.has(player, perm)) || !permRequired) {
+			if ((payRequired && WarpsReloaded.getEconomy().bankHas(player.getName(), cost).transactionSuccess()) || !payRequired) {
+				if (config.getBoolean("Warps.Particles"))player.playEffect(player.getLocation(), Effect.SMOKE, 0);
+				player.teleport(location, TeleportCause.PLUGIN);
+				if (config.getBoolean("Warps.Particles")) player.playEffect(location, Effect.SMOKE, 0);
+				io.send(player, "You've been warped to " + name);
+			}
 		}
 	}
 	
