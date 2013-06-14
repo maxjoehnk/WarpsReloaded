@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.milkbowl.vault.economy.Economy;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.efreak.warps.commands.*;
 import org.efreak.warps.databases.*;
@@ -21,6 +25,7 @@ public class WarpsReloaded extends JavaPlugin {
 	private static JavaPlugin instance;
 	private static EMetrics metrics;
 	private static HashMap<String, Warp> warps;
+	private static Economy economy;
 	
 	@Override
 	public void onLoad() {
@@ -54,6 +59,9 @@ public class WarpsReloaded extends JavaPlugin {
 		getServer().getPluginCommand("warps").setExecutor(new WarpsCommand());
 		//getServer().getPluginManager().registerEvents(new BukkitListener(), this);
 		if (config.getBoolean("General.Statistics")) metrics.startMetrics();
+		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		if (economyProvider != null) economy = economyProvider.getProvider();
+
 	}
 	
 	@Override
@@ -85,5 +93,9 @@ public class WarpsReloaded extends JavaPlugin {
 	
 	public static Database getDb() {
 		return db;
+	}
+	
+	public static Economy getEconomy() {
+		return economy;
 	}
 }
