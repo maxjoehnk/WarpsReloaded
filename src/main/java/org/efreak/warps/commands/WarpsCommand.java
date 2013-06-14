@@ -1,4 +1,4 @@
-package org.efreak.warps.commands;
+package org.efreak.warps.commands; 
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +39,16 @@ public class WarpsCommand implements CommandExecutor {
 				if (Permissions.has(sender, "warps.list", false, "/warps")) {
 					int pageCount = 1;
 					List<Warp> warps = WarpsReloaded.getWarpList();
+					if (warps.size() % 9 == 0) pageCount = warps.size() / 9;
+					else pageCount = (warps.size() / 9) + 1;
 					if (args.length == 1) {
-						
+						if (Integer.valueOf(args[1]) > pageCount) {
+							io.sendError(sender, "This page doesn't exist");
+							return true;
+						}else {
+							io.sendHeader(sender, "WARPS (" + args[1] + "/" + pageCount + ")");
+							for (int i = pageCount * 9; i < warps.size() && i < (pageCount + 1) * 9; i++) io.send(sender, warps.get(i).getName(), false);
+						}
 					}else {
 						io.sendHeader(sender, "WARPS (1/" + pageCount + ")");
 						for (int i = 0; i < warps.size() && i < 9; i++) io.send(sender, warps.get(i).getName(), false);
