@@ -55,7 +55,7 @@ public class WarpsReloaded extends JavaPlugin {
 		}
 		if (config.getBoolean("Warps.UseDatabase")) db.init();
 		warps = new HashMap<String, Warp>();
-		for (String warp : WarpConfiguration.getWarpNames()) warps.put(warp, new Warp(warp));
+		for (String warp : WarpConfiguration.getWarpNames()) addWarp(new Warp(warp));
 		new HelpManager().init();
 		getServer().getPluginCommand("warp").setExecutor(new WarpCommand());
 		getServer().getPluginCommand("warps").setExecutor(new WarpsCommand());
@@ -71,6 +71,11 @@ public class WarpsReloaded extends JavaPlugin {
 		if (config.getBoolean("Warps.UseDatabase")) db.shutdown();
     	getServer().getScheduler().cancelTasks(this);
 		io.sendConsole(getDescription().getFullName() + " has been disabled");
+	}
+	
+	public static void addWarp(Warp warp) {
+		warps.put(warp.getName(), warp);
+		if (config.getDebug()) io.debug("Added Warp: " + warp.getName());
 	}
 	
 	public static HashMap<String, Warp> getWarps() {
