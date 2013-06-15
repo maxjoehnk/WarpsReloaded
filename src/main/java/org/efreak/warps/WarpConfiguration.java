@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -52,6 +53,20 @@ public class WarpConfiguration{
 	
 	public static ConfigurationSection getWarp(String name) {
 		return warps.getConfigurationSection("Warps." + name);
+	}
+	
+	public static void createWarp(String name, Location location, String perm, double cost) {
+		warps.set("Warps." + name + ".Location.World", location.getWorld().getName());
+		warps.set("Warps." + name + ".Location.X", location.getBlockX());
+		warps.set("Warps." + name + ".Location.Y", location.getBlockY());
+		warps.set("Warps." + name + ".Location.Z", location.getBlockZ());
+		if (perm != null) warps.set("Warps." + name + ".Permission", perm);
+		if (cost > 0) warps.set("Warps." + name + ".Cost", cost);
+		try {
+			warps.save(warpsFile);
+		} catch (IOException e) {
+			if (config.getDebug()) e.printStackTrace();
+		}
 	}
 	
 	public static ConfigurationSection getWarpRegions() {
