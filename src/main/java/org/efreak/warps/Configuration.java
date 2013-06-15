@@ -43,11 +43,11 @@ public class Configuration{
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		config = plugin.getConfig();
 		if (!configFile.exists()){
-			io.sendConsole("Creating config.yml...", true);
+			io.sendConsole("Creating config.yml...");
 			try {
 				configFile.createNewFile();
 				updateConfig();
-		        io.sendConsole("config.yml succesfully created!", true);
+		        io.sendConsole("config.yml succesfully created!");
 				config.load(configFile);
 			} catch (IOException e) {
 				if (getDebug()) e.printStackTrace();
@@ -90,6 +90,7 @@ public class Configuration{
 		update("IO.HelpHeader", "WARPS RELOADED HELP(%page%/%pages%)");
 		update("IO.HelpFormat", "&e%cmd% %args%: &f%desc%");
 		update("Database.System", "SQLite");
+		update("Warps.Particles", true);
 		update("Warps.UseDatabase", true); //Save Warps in Database or Flatfile
 		if (!getBoolean("Warps.UseDatabase")) update("Warps.File", "warps.yml");
 		else remove("Warps.File");
