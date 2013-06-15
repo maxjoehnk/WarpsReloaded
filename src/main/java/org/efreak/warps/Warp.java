@@ -16,7 +16,7 @@ public class Warp {
 	private Location location;
 	private String name;
 	private String perm;
-	private int cost;
+	private double cost;
 	private boolean permRequired = false;
 	private boolean payRequired = false;
 
@@ -55,7 +55,7 @@ public class Warp {
 					permRequired = false;
 				}
 				try {
-					cost = warp.getInt("cost");
+					cost = warp.getDouble("cost");
 					payRequired = cost == 0 ? false : true;
 				}catch (SQLException e) {
 					if (config.getDebug()) e.printStackTrace();
@@ -80,7 +80,7 @@ public class Warp {
 			int z = warp.getInt("Location.Z");
 			location = new Location(world, x, y, z);
 			if (warp.contains("Cost")) {
-				cost = warp.getInt("Cost");
+				cost = warp.getDouble("Cost");
 				payRequired = true;
 			}
 			if (warp.contains("Permission")) {
@@ -88,6 +88,15 @@ public class Warp {
 				permRequired = true;
 			}
 		}
+	}
+	
+	public static Warp create(String name, Location location, String perm, double cost) {
+		if (config.getBoolean("Warps.UseDatabase")) {
+			
+		}else WarpConfiguration.createWarp(name, location, perm, cost);
+		Warp warp = new Warp(name);
+		WarpsReloaded.addWarp(warp);
+		return warp;
 	}
 	
 	public String getName() {
@@ -132,7 +141,7 @@ public class Warp {
 		return perm;
 	}
 	
-	public int getCost() {
+	public double getCost() {
 		return cost;
 	}
 }
