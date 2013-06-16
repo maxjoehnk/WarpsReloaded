@@ -11,6 +11,10 @@ commands:
     description: The Main Command of Warps Reloaded
     usage: >
            Use /warp help for more help
+  setwarp:
+    description: Create a new Warp
+    usage: >
+           /setwarp (name) [p=permission] [c=cost]
   warps:
     description: Displays a list of all available warps
     usage: >
