@@ -69,6 +69,22 @@ public class WarpConfiguration{
 		}
 	}
 	
+	public static ConfigurationSection getWarpGroups() {
+		return warps.getConfigurationSection("WarpGroups");
+	}
+	
+	public static List<String> getWarpGroupNames() {
+		return new ArrayList<String>(warps.getConfigurationSection("WarpGroups").getKeys(false));
+	}
+
+	public static boolean containsWarpGroup(String name) {
+		return warps.contains("WarpGroups." + name);
+	}
+	
+	public static ConfigurationSection getWarpGroup(String name) {
+		return warps.getConfigurationSection("WarpGroup." + name);
+	}
+	
 	public static ConfigurationSection getWarpRegions() {
 		return warps.getConfigurationSection("WarpRegions");
 	}
