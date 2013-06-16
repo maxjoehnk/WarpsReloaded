@@ -70,7 +70,7 @@ public class WarpCommand implements CommandExecutor {
 				if (args[2].startsWith("p=")) perm = args[3].substring(2);
 				else if (args[2].startsWith("c=")) cost = Double.valueOf(args[2].substring(2));
 				if (args[3].startsWith("p=")) perm = args[3].substring(2);
-				else if (args[3].startsWith("c=")) cost = Double.valueOf(args[2].substring(2));
+				else if (args[3].startsWith("c=")) cost = Double.valueOf(args[3].substring(2));
 				Warp.create(args[1], ((Player) sender).getLocation(), perm, cost);
 				io.send(sender, "Warp " + args[1] + " was successfully created");
 			}else io.sendError(sender, "Usage: /warp create (name) [p=permission] [c=cost]");
