@@ -1,5 +1,6 @@
 package org.efreak.warps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ public class WarpGroup {
 	
 	public WarpGroup(String name) {
 		this.name = name;
-		
+		warps = new ArrayList<Warp>();
 	}
 	
 	public String getName() {
@@ -21,6 +22,10 @@ public class WarpGroup {
 	public void warp(Player player) {
 		Warp warp = warps.get(0 + (int)(Math.random() * ((warps.size() - 0) + 1)));
 		warp.warp(player, true);
+	}
+	
+	public List<Warp> getWarps() {
+		return warps;
 	}
 	
 }
