@@ -34,8 +34,8 @@ public class IOManager {
 	public void init() {
 		color = config.getBoolean("IO.ColoredLogs");
 		prefix = color(config.getString("IO.Prefix")) + " " + ChatColor.WHITE;
-		error = color(config.getString("IO.Error")) + " " + ChatColor.WHITE;
-		warning = color(config.getString("IO.Warning")) + " " + ChatColor.WHITE;
+		error = color(config.getString("IO.Error")) + " ";
+		warning = color(config.getString("IO.Warning")) + " ";
 		translator = new Translator();
 		translator.initialize();
 	}
