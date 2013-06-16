@@ -22,7 +22,7 @@ public class SetwarpCommand implements CommandExecutor {
 	}
 	
 	public SetwarpCommand() {
-		HelpManager.registerCommand("Warp.Create", "/setwarp", Arrays.asList("(name)", "[p=permission]", "[c=cost]"), "warps.warp.create");
+		HelpManager.registerCommand("Warp.Create", "/setwarp", Arrays.asList("(name)", "[p=permission]", "[c=cost]"), "warps.create");
 	}
 	
 	@Override
