@@ -25,6 +25,7 @@ public class WarpsReloaded extends JavaPlugin {
 	private static JavaPlugin instance;
 	private static EMetrics metrics;
 	private static HashMap<String, Warp> warps;
+	private static HashMap<String, WarpGroup> warpGroups;
 	private static Economy economy;
 	
 	@Override
@@ -56,9 +57,12 @@ public class WarpsReloaded extends JavaPlugin {
 		if (config.getBoolean("Warps.UseDatabase")) db.init();
 		warps = new HashMap<String, Warp>();
 		for (String warp : WarpConfiguration.getWarpNames()) addWarp(new Warp(warp));
+		warpGroups = new HashMap<String, WarpGroup>();
+		for (String warpGroup : WarpConfiguration.getWarpGroupNames()) addWarpGroup(new WarpGroup(warpGroup));
 		new HelpManager().init();
 		getServer().getPluginCommand("warp").setExecutor(new WarpCommand());
 		getServer().getPluginCommand("warps").setExecutor(new WarpsCommand());
+		getServer().getPluginCommand("setwarp").setExecutor(new SetwarpCommand());
 		//getServer().getPluginManager().registerEvents(new BukkitListener(), this);
 		if (config.getBoolean("General.Statistics")) metrics.startMetrics();
 		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
@@ -84,6 +88,15 @@ public class WarpsReloaded extends JavaPlugin {
 	
 	public static List<Warp> getWarpList() {
 		return new ArrayList<Warp>(warps.values());
+	}
+	
+	public static void addWarpGroup(WarpGroup group) {
+		warpGroups.put(group.getName(), group);
+		if (config.getDebug()) io.debug("Added Warp Group: " + group.getName() + " containing " + group.getWarps().size() + " Warps");
+	}
+	
+	public static HashMap<String, WarpGroup> getWarpGroups() {
+		return warpGroups;
 	}
 	
 	public static JavaPlugin getInstance() {
