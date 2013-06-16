@@ -13,6 +13,7 @@ import org.efreak.warps.Configuration;
 import org.efreak.warps.IOManager;
 import org.efreak.warps.Permissions;
 import org.efreak.warps.Warp;
+import org.efreak.warps.WarpGroup;
 import org.efreak.warps.WarpsReloaded;
 import org.efreak.warps.help.HelpManager;
 import org.efreak.warps.help.HelpTopic;
@@ -28,10 +29,11 @@ public class WarpCommand implements CommandExecutor {
 	}
 	
 	public WarpCommand() {
-		HelpManager.registerCommand("Warp.Warp", "/warp", Arrays.asList("(name)", "[player]"), "warps.warp");
-		HelpManager.registerCommand("Warp.Create", "/warp create", Arrays.asList("(name)", "[p=permission]", "[c=cost]"), "warps.warp.create");
-		HelpManager.registerCommand("Warp.List", "/warp list", Arrays.asList("[#]"), "warps.list");
 		HelpManager.registerCommand("Warp.Help", "/warp help", Arrays.asList("[#]"), "warps.help");
+		HelpManager.registerCommand("Warp.Warp", "/warp", Arrays.asList("(name)", "[player]"), "warps.warp");
+		HelpManager.registerCommand("Warp.Create", "/warp create", Arrays.asList("(name)", "[p=permission]", "[c=cost]"), "warps.create");
+		HelpManager.registerCommand("Warp.List", "/warp list", Arrays.asList("[#]"), "warps.list");
+		HelpManager.registerCommand("Warp.Map", "/warp map", Arrays.asList("[player]"), "warps.map");
 	}
 	
 	@Override
@@ -47,6 +49,7 @@ public class WarpCommand implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("list")) runList(sender, cmd, label, args);
 				else if (args[0].equalsIgnoreCase("create")) runCreate(sender, cmd, label, args);
 				else if (args[0].equalsIgnoreCase("help")) runHelp(sender, cmd, label, args);
+				else if (args[0].equalsIgnoreCase("map")) runMap(sender, cmd, label, args);
 				else run(sender, cmd, label, args);				
 				return true;
 			}else return false;
@@ -110,7 +113,10 @@ public class WarpCommand implements CommandExecutor {
 			if (WarpsReloaded.getWarps().containsKey(args[0])) {
 				Warp warp = WarpsReloaded.getWarps().get(args[0]);
 				warp.warp((Player) sender);
-			}else io.sendError(sender, "This Warp doesn't exist");
+			}else if (WarpsReloaded.getWarpGroups().containsKey(args[0])) {
+				WarpGroup group = WarpsReloaded.getWarpGroups().get(args[0]);
+				group.warp((Player) sender);
+			}else io.sendError(sender, "No Warp or WarpGroup with this name found");
 		}
 		return true;
 	}
@@ -147,6 +153,10 @@ public class WarpCommand implements CommandExecutor {
 				}
 			}
 		}
+		return true;
+	}
+	
+	private boolean runMap(CommandSender sender, Command cmd, String label, String[] args) {
 		return true;
 	}
 }
